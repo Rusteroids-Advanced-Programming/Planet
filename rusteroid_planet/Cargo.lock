@@ -70,6 +70,7 @@ checksum = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
 [[package]]
 name = "common-game"
 version = "2.0.0"
+source = "git+https://github.com/unitn-ap-2025/common.git#f10376f98b64a83726b057c50caa1a0cc37f3034"
 dependencies = [
  "crossbeam-channel",
  "enum-as-inner",
