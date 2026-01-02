@@ -63,5 +63,3 @@ cargo test
 Join our orbital command center for support and updates:
 
 **[Join the Rusteroids Discord](https://discord.gg/wu96DjsA)**
-
-*Project for the Advanced Programming Course 2025/2026.*
