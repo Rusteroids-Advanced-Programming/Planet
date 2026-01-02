@@ -4,7 +4,7 @@ Welcome to **Rusteroids**! We are a high-performance **TYPE A** planet engineere
 
 ---
 
-## 🌍 Planet Properties
+## ⚛️ Planet Details
 
 Rusteroids is built on a foundation of stability and defensive readiness:
 
@@ -15,7 +15,7 @@ Rusteroids is built on a foundation of stability and defensive readiness:
 
 ---
 
-## 💡 Planet Logic
+## ⚙️ Planet Mechanism
 
 ### Sunray Absorption
 
@@ -31,7 +31,7 @@ Rusteroids features a unique **Energy Threshold** variable. This allows commande
 
 * **Defensive Priority:** You define the minimum number of charged cells required to remain in "Safety Mode."
 * **Resource Extraction:** The planet will only allow resource gathering if the current energy level **exceeds** your custom threshold.
-* **Example:** If your threshold is set to `3`, Rusteroids will block all resource requests until at least 4 cells are fully charged, ensuring you always have power left for rocket fabrication.
+* **Example:** If your threshold is set to **3**, Rusteroids will block all resource requests until at least **4 cells** are fully charged, ensuring you always have power left for rocket fabrication.
 
 ---
 
