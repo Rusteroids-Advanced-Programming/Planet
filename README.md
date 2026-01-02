@@ -2,8 +2,6 @@
 
 Welcome to **Rusteroids**! As a high-performance **TYPE A** planet, we prioritize structural integrity and strategic energy management. We don't just store energy; we weaponize it for defense.
 
-*Project for the Advanced Programming Course 2025/2026.*
-
 ---
 
 ## 🌍 Planet Properties
@@ -65,3 +63,5 @@ cargo test
 Join our orbital command center for support and updates:
 
 **[Join the Rusteroids Discord](https://discord.gg/wu96DjsA)**
+
+*Project for the Advanced Programming Course 2025/2026.*
