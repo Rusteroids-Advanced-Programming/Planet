@@ -1,12 +1,12 @@
+use common_game::components::forge::Forge;
 use std::sync::OnceLock;
 use std::time::Duration;
-use common_game::components::forge::Forge;
 
-mod utils;
-mod handle_planet;
 mod explorer;
+mod handle_planet;
 mod orchestrator;
 pub mod test_unit;
+mod utils;
 
 const TIMEOUT: Duration = Duration::from_millis(500);
 

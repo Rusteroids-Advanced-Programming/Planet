@@ -1,17 +1,14 @@
-use std::thread;
+use crate::rusteroids::Rusteroids;
+use crate::tests::{FORGE, TIMEOUT};
 use common_game::components::forge::Forge;
 use common_game::components::planet::Planet;
 use common_game::protocols::orchestrator_planet::{OrchestratorToPlanet, PlanetToOrchestrator};
 use common_game::protocols::planet_explorer::{ExplorerToPlanet, PlanetToExplorer};
 use crossbeam_channel::{Receiver, Sender};
-use crate::rusteroids::Rusteroids;
-use crate::tests::{FORGE, TIMEOUT};
-
+use std::thread;
 
 pub fn init_logger() {
-    let _ = env_logger::builder()
-        .is_test(true)
-        .try_init();
+    let _ = env_logger::builder().is_test(true).try_init();
 }
 
 pub fn get_forge() -> &'static Forge {
@@ -24,11 +21,12 @@ pub fn start_planet_thread(mut planet: Planet) {
     });
 }
 
-pub fn create_channels_for_planet() -> ((Sender<OrchestratorToPlanet>, Receiver<OrchestratorToPlanet>),
-                                    (Sender<PlanetToOrchestrator>, Receiver<PlanetToOrchestrator>),
-                                    (Sender<ExplorerToPlanet>, Receiver<ExplorerToPlanet>),
-                                    (Sender<PlanetToExplorer>, Receiver<PlanetToExplorer>))
-{
+pub fn create_channels_for_planet() -> (
+    (Sender<OrchestratorToPlanet>, Receiver<OrchestratorToPlanet>),
+    (Sender<PlanetToOrchestrator>, Receiver<PlanetToOrchestrator>),
+    (Sender<ExplorerToPlanet>, Receiver<ExplorerToPlanet>),
+    (Sender<PlanetToExplorer>, Receiver<PlanetToExplorer>),
+) {
     let orch_to_planet = crossbeam_channel::unbounded::<OrchestratorToPlanet>();
 
     // Planet -> Orchestrator
@@ -40,23 +38,55 @@ pub fn create_channels_for_planet() -> ((Sender<OrchestratorToPlanet>, Receiver<
     // Planet -> Explorer
     let planet_to_expl = crossbeam_channel::unbounded::<PlanetToExplorer>();
 
-    (orch_to_planet, planet_to_orch, expl_to_planet, planet_to_expl)
+    (
+        orch_to_planet,
+        planet_to_orch,
+        expl_to_planet,
+        planet_to_expl,
+    )
 }
 
-pub fn init_test_planet() -> (Planet, Sender<OrchestratorToPlanet>, Receiver<PlanetToOrchestrator>, Sender<ExplorerToPlanet>, Sender<PlanetToExplorer>, Receiver<PlanetToExplorer>) {
+pub fn init_test_planet() -> (
+    Planet,
+    Sender<OrchestratorToPlanet>,
+    Receiver<PlanetToOrchestrator>,
+    Sender<ExplorerToPlanet>,
+    Sender<PlanetToExplorer>,
+    Receiver<PlanetToExplorer>,
+) {
     // channel creation
 
     // Orchestrator -> Planet
 
     let channels = create_channels_for_planet();
     let num_cells_for_rocket = 2;
-    let planet = Rusteroids::new(num_cells_for_rocket, channels.0.1, channels.1.0, channels.2.1).unwrap();
+    let planet = Rusteroids::new(
+        1,
+        num_cells_for_rocket,
+        channels.0.1,
+        channels.1.0,
+        channels.2.1,
+    )
+    .unwrap();
 
-    (planet.planet, channels.0.0, channels.1.1, channels.2.0, channels.3.0, channels.3.1)
+    (
+        planet.planet,
+        channels.0.0,
+        channels.1.1,
+        channels.2.0,
+        channels.3.0,
+        channels.3.1,
+    )
 }
 
-pub fn send_message_and_wait_response<T, B>(sender_channel: &Sender<T>, receiver_channel: &Receiver<B>, msg: T) -> Result<B, String> {
-    sender_channel.send(msg).map_err(|_| "Channel disconnected while sending".to_string())?;
+pub fn send_message_and_wait_response<T, B>(
+    sender_channel: &Sender<T>,
+    receiver_channel: &Receiver<B>,
+    msg: T,
+) -> Result<B, String> {
+    sender_channel
+        .send(msg)
+        .map_err(|_| "Channel disconnected while sending".to_string())?;
 
     let response = receiver_channel.recv_timeout(TIMEOUT);
     match response {
@@ -66,5 +96,4 @@ pub fn send_message_and_wait_response<T, B>(sender_channel: &Sender<T>, receiver
             Err(error_msg)
         }
     }
-
 }

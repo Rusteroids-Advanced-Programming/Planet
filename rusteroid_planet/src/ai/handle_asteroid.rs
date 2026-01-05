@@ -1,13 +1,27 @@
+use crate::ai::planet_ai::RusteroidAI;
+use crate::ai::utils::handle_rocket_creation_result;
+use crate::planet_logging::{
+    asteroid_defense_log, rocket_built_log, send_something_received_log,
+    send_stopped_log_to_orchestrator, sending_response_log,
+};
 use common_game::components::planet::PlanetState;
 use common_game::components::resource::{Combinator, Generator};
 use common_game::components::rocket::Rocket;
-use crate::ai::planet_ai::RusteroidAI;
-use crate::ai::utils::handle_rocket_creation_result;
-use crate::planet_logging::{asteroid_defense_log, rocket_built_log, send_something_received_log, send_stopped_log_to_orchestrator, sending_response_log};
 
 impl RusteroidAI {
-    pub(crate) fn handle_asteroid_impl(&mut self, state: &mut PlanetState, _generator: &Generator, _combinator: &Combinator) -> Option<Rocket> {
-        send_something_received_log(self, "Asteroid".to_string(), Some(self.orchestrator_participant.clone()), Some(self.asteroid_count), None);
+    pub(crate) fn handle_asteroid_impl(
+        &mut self,
+        state: &mut PlanetState,
+        _generator: &Generator,
+        _combinator: &Combinator,
+    ) -> Option<Rocket> {
+        send_something_received_log(
+            self,
+            "Asteroid".to_string(),
+            Some(self.orchestrator_participant.clone()),
+            Some(self.asteroid_count),
+            None,
+        );
 
         if self.stopped {
             send_stopped_log_to_orchestrator(self);
@@ -59,7 +73,12 @@ impl RusteroidAI {
         }
 
         asteroid_defense_log(self, &result, self.asteroid_count);
-        sending_response_log(self, "Asteroid Ack".to_string(), Some(self.orchestrator_participant.clone()), None);
+        sending_response_log(
+            self,
+            "Asteroid Ack".to_string(),
+            Some(self.orchestrator_participant.clone()),
+            None,
+        );
 
         result
     }

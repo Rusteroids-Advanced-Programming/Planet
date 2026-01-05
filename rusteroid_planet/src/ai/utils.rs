@@ -8,7 +8,7 @@ pub(crate) fn handle_rocket_creation_result(res: Result<(), String>) {
     }
 }
 
-pub(crate ) fn get_charged_cells_num(state: &PlanetState) -> usize {
+pub(crate) fn get_charged_cells_num(state: &PlanetState) -> usize {
     let mut count = 0;
     let iter = state.cells_iter();
     for cell in iter {
@@ -19,9 +19,11 @@ pub(crate ) fn get_charged_cells_num(state: &PlanetState) -> usize {
     count
 }
 
-
-pub fn gen_basic_resource(generator: &Generator, basic_resource_type: BasicResourceType, cell: &mut EnergyCell) -> Option<BasicResource> {
-
+pub fn gen_basic_resource(
+    generator: &Generator,
+    basic_resource_type: BasicResourceType,
+    cell: &mut EnergyCell,
+) -> Option<BasicResource> {
     let result: Option<BasicResource>;
 
     match basic_resource_type {
@@ -62,7 +64,6 @@ pub fn gen_basic_resource(generator: &Generator, basic_resource_type: BasicResou
         }
 
         BasicResourceType::Silicon => {
-
             let res = generator.make_silicon(cell);
             match res {
                 Err(_e) => {
@@ -72,7 +73,6 @@ pub fn gen_basic_resource(generator: &Generator, basic_resource_type: BasicResou
                     result = Some(BasicResource::Silicon(silicon_resource));
                 }
             }
-
         }
     }
 

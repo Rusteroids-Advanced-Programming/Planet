@@ -1,9 +1,8 @@
+use crate::ai::planet_ai::RusteroidAI;
 use common_game::components::resource::BasicResourceType;
 use common_game::components::rocket::Rocket;
-use common_game::logging::{ActorType, LogEvent, EventType, Channel, Payload, Participant};
+use common_game::logging::{ActorType, Channel, EventType, LogEvent, Participant, Payload};
 use common_game::utils::ID;
-use crate::ai::planet_ai::RusteroidAI;
-
 
 pub fn create_orchestrator_participant() -> Participant {
     Participant::new(ActorType::Orchestrator, 0 as ID)
@@ -32,7 +31,13 @@ pub fn emit_stopped_log(ai: &RusteroidAI, receiver: Option<Participant>, just_se
     }
     let payload = set_payload(vec![(key, format!("Planet {}", ai.id))]);
     let sender = Some(ai.planet_participant.clone());
-    let log = LogEvent::new(sender, receiver, EventType::MessagePlanetToOrchestrator, Channel::Info, payload);
+    let log = LogEvent::new(
+        sender,
+        receiver,
+        EventType::MessagePlanetToOrchestrator,
+        Channel::Info,
+        payload,
+    );
     log.emit();
 }
 
@@ -45,7 +50,13 @@ pub fn send_stopped_log_to_explorer(ai: &RusteroidAI, explorer_id: ID) {
     emit_stopped_log(ai, Some(explorer_participant), false);
 }
 
-pub fn send_something_received_log(ai: &RusteroidAI, object_received: String, sender: Option<Participant>, count: Option<usize>, from_explorer: Option<ID>) {
+pub fn send_something_received_log(
+    ai: &RusteroidAI,
+    object_received: String,
+    sender: Option<Participant>,
+    count: Option<usize>,
+    from_explorer: Option<ID>,
+) {
     let key = format!("{} Received", object_received);
     let mut value = format!("Planet {} received {}", ai.id, object_received);
     let mut event_type = EventType::MessageOrchestratorToPlanet;
@@ -65,12 +76,22 @@ pub fn send_something_received_log(ai: &RusteroidAI, object_received: String, se
     }
 
     let payload = set_payload(vec![(key, value)]);
-    let log = LogEvent::new(sender, Some(ai.planet_participant.clone()), event_type, Channel::Trace, payload);
+    let log = LogEvent::new(
+        sender,
+        Some(ai.planet_participant.clone()),
+        event_type,
+        Channel::Trace,
+        payload,
+    );
     log.emit();
 }
 
-
-pub fn sending_response_log(ai: &RusteroidAI, response_name: String, receiver: Option<Participant>, to_explorer: Option<ID>) {
+pub fn sending_response_log(
+    ai: &RusteroidAI,
+    response_name: String,
+    receiver: Option<Participant>,
+    to_explorer: Option<ID>,
+) {
     let key = format!("Sending {}", response_name);
     let mut value = format!("Planet {} is sending {}", ai.id, response_name);
     let mut event_type = EventType::MessagePlanetToOrchestrator;
@@ -84,32 +105,51 @@ pub fn sending_response_log(ai: &RusteroidAI, response_name: String, receiver: O
     }
 
     let payload = set_payload(vec![(key, value)]);
-    let log = LogEvent::new(Some(ai.planet_participant.clone()), receiver, event_type, Channel::Trace, payload);
+    let log = LogEvent::new(
+        Some(ai.planet_participant.clone()),
+        receiver,
+        event_type,
+        Channel::Trace,
+        payload,
+    );
     log.emit();
 }
 
-
 pub fn rocket_built_log(ai: &RusteroidAI) {
-    let payload = set_payload(vec![("Rocket Built".to_string(), format!("Planet {} built a rocket", ai.id))]);
-    let log = LogEvent::new(Some(ai.planet_participant.clone()), None, EventType::InternalPlanetAction, Channel::Info, payload);
+    let payload = set_payload(vec![(
+        "Rocket Built".to_string(),
+        format!("Planet {} built a rocket", ai.id),
+    )]);
+    let log = LogEvent::new(
+        Some(ai.planet_participant.clone()),
+        None,
+        EventType::InternalPlanetAction,
+        Channel::Info,
+        payload,
+    );
     log.emit();
 }
 
 pub fn sunray_storage_log(ai: &RusteroidAI, stored: bool, charged_cells: usize) {
-    let key:String;
-    let mut value:String;
+    let key: String;
+    let mut value: String;
     if stored {
         key = "Sunray Stored".to_string();
         value = format!("Planet {} stored a sunray.", ai.id);
-    }
-    else {
+    } else {
         key = "Sunray Discarded".to_string();
         value = format!("Planet {} discarded a sunray.", ai.id);
     }
     value = format!("{} There are {} charged energy cells", value, charged_cells);
 
     let payload = set_payload(vec![(key, value)]);
-    let log = LogEvent::new(Some(ai.planet_participant.clone()), None, EventType::InternalPlanetAction, Channel::Trace, payload);
+    let log = LogEvent::new(
+        Some(ai.planet_participant.clone()),
+        None,
+        EventType::InternalPlanetAction,
+        Channel::Trace,
+        payload,
+    );
     log.emit();
 }
 
@@ -119,22 +159,47 @@ pub fn asteroid_defense_log(ai: &RusteroidAI, defended: &Option<Rocket>, asteroi
 
     match defended {
         Some(_) => {
-            value = format!("Planet {} defended from asteroid #{} with a rocket", ai.id, asteroid_num);
+            value = format!(
+                "Planet {} defended from asteroid #{} with a rocket",
+                ai.id, asteroid_num
+            );
         }
         None => {
-            value = format!("Planet {} could not defend from asteroid #{}", ai.id, asteroid_num);
+            value = format!(
+                "Planet {} could not defend from asteroid #{}",
+                ai.id, asteroid_num
+            );
         }
     }
 
     let payload = set_payload(vec![(key, value)]);
-    let log = LogEvent::new(Some(ai.planet_participant.clone()), None, EventType::InternalPlanetAction, Channel::Info, payload);
+    let log = LogEvent::new(
+        Some(ai.planet_participant.clone()),
+        None,
+        EventType::InternalPlanetAction,
+        Channel::Info,
+        payload,
+    );
     log.emit();
 }
 
-pub fn resource_generated_log(ai: &RusteroidAI, basic_resource_type: BasicResourceType, for_explorer: ID) {
+pub fn resource_generated_log(
+    ai: &RusteroidAI,
+    basic_resource_type: BasicResourceType,
+    for_explorer: ID,
+) {
     let key = "Resource Generated".to_string();
-    let value = format!("Planet {} generated a {:?} for Explorer #{}", ai.id, basic_resource_type, for_explorer);
+    let value = format!(
+        "Planet {} generated a {:?} for Explorer #{}",
+        ai.id, basic_resource_type, for_explorer
+    );
     let payload = set_payload(vec![(key, value)]);
-    let log = LogEvent::new(Some(ai.planet_participant.clone()), None, EventType::InternalPlanetAction, Channel::Info, payload);
+    let log = LogEvent::new(
+        Some(ai.planet_participant.clone()),
+        None,
+        EventType::InternalPlanetAction,
+        Channel::Info,
+        payload,
+    );
     log.emit();
 }

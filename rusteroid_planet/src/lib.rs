@@ -1,4 +1,4 @@
-pub mod rusteroids;
-pub mod planet_logging;
 mod ai;
+pub mod planet_logging;
+pub mod rusteroids;
 mod tests;

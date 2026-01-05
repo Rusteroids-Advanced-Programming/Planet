@@ -1,13 +1,28 @@
+use crate::ai::planet_ai::RusteroidAI;
+use crate::ai::utils::{get_charged_cells_num, handle_rocket_creation_result};
+use crate::planet_logging::{
+    rocket_built_log, send_something_received_log, send_stopped_log_to_orchestrator,
+    sending_response_log, sunray_storage_log,
+};
 use common_game::components::planet::PlanetState;
 use common_game::components::resource::{Combinator, Generator};
 use common_game::components::sunray::Sunray;
-use crate::ai::planet_ai::RusteroidAI;
-use crate::ai::utils::{get_charged_cells_num, handle_rocket_creation_result};
-use crate::planet_logging::{rocket_built_log, send_something_received_log, send_stopped_log_to_orchestrator, sending_response_log, sunray_storage_log};
 
-impl RusteroidAI{
-    pub(crate) fn handle_sunray_impl(&mut self, state: &mut PlanetState, _generator: &Generator, _combinator: &Combinator, sunray: Sunray) {
-        send_something_received_log(self, "Sunray".to_string(), Some(self.orchestrator_participant.clone()), Some(self.sunray_count), None);
+impl RusteroidAI {
+    pub(crate) fn handle_sunray_impl(
+        &mut self,
+        state: &mut PlanetState,
+        _generator: &Generator,
+        _combinator: &Combinator,
+        sunray: Sunray,
+    ) {
+        send_something_received_log(
+            self,
+            "Sunray".to_string(),
+            Some(self.orchestrator_participant.clone()),
+            Some(self.sunray_count),
+            None,
+        );
 
         if self.stopped {
             send_stopped_log_to_orchestrator(self);
@@ -38,7 +53,7 @@ impl RusteroidAI{
         //     }
         // }
 
-        if !state.has_rocket(){
+        if !state.has_rocket() {
             let (_, i) = state.full_cell().unwrap();
             let res = state.build_rocket(i);
             handle_rocket_creation_result(res);
@@ -47,6 +62,11 @@ impl RusteroidAI{
             // println!("Rocket built with sunray {}", self.sunray_count);
         }
 
-        sending_response_log(self, "Sunray ACK".to_string(), Some(self.orchestrator_participant.clone()), None);
+        sending_response_log(
+            self,
+            "Sunray ACK".to_string(),
+            Some(self.orchestrator_participant.clone()),
+            None,
+        );
     }
 }
