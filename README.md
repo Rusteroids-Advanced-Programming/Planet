@@ -1,65 +1,79 @@
 # ☄️ Planet Rusteroids
 
-Welcome to **Rusteroids**! As a high-performance **TYPE A** planet, we prioritize structural integrity and strategic energy management. We don't just store energy; we weaponize it for defense.
+Welcome to **Rusteroids**! We are a high-performance **TYPE A** planet engineered for maximum durability and strategic energy management. While others focus on complexity, we focus on security and reliability.
 
 ---
 
-## 🌍 Planet Properties
+## ⚛️ Planet Details
 
-Our planetary core is built for stability and high-capacity storage:
+Rusteroids is built on a foundation of stability and defensive readiness:
 
-| Property | Specification |
-| --- | --- |
-| **Planet Class** | TYPE A |
-| **Basic Resource** | Carbon |
-| **Energy Storage** | Vector-based (5 Energy Cells) |
-| **Defense Capacity** | 1 Rocket (Active Defense) |
+* **Planet Class:** TYPE A
+* **Fundamental Resource:** Carbon
+* **Energy Storage:** Vector-based Array (5 Dedicated Cells)
+* **Defensive Hardware:** Integrated Rocket Launchers (Supports 1 Rocket)
 
 ---
 
-## 💡 Planet Logic
+## ⚙️ Planet Mechanism
 
-### Sunray Handling
+### Sunray Absorption
 
-Upon receiving a sunray, the planet recharges its available energy cells (up to our maximum capacity of 5).
+Our energy vector is designed for rapid intake. Whenever a sunray hits the surface, Rusteroids recharges its internal energy cells sequentially up to our 5-cell capacity.
 
-### Automated Defense & Fabrication
+### Rocket Fabrication & Defense
 
-Rusteroids maintains a "Ready-to-Launch" policy:
+We maintain a "Safety First" protocol. If the planet’s orbital defense is empty (no rocket available), the system automatically consumes one charged energy cell to immediately construct a new rocket. This rocket is held in standby to deflect incoming asteroids.
 
-* **Fabrication:** If the planet has no rocket available and at least **one (1)** charged energy cell, it immediately consumes that cell to construct a new rocket.
-* **Interception:** Once a rocket is active, it is automatically deployed to deflect incoming asteroids.
+### Strategic Energy Reservation
 
-### Energy Reservation System
+Rusteroids features a unique **Energy Threshold** variable. This allows commanders to decide exactly how much power is reserved exclusively for defense:
 
-We provide a **customizable threshold variable** to allow users to balance defense and utility. This variable defines the number of energy cells reserved strictly for rocket production:
-
-* **Resource Extraction:** Resources can only be extracted if the current energy level is **greater than** your defined threshold.
-* **Example:** If you set a threshold of `3`, the planet will refuse resource requests unless it has 4 or 5 cells charged, ensuring your defense budget is never compromised.
+* **Defensive Priority:** You define the minimum number of charged cells required to remain in "Safety Mode."
+* **Resource Extraction:** The planet will only allow resource gathering if the current energy level **exceeds** your custom threshold.
+* **Example:** If your threshold is set to **3**, Rusteroids will block all resource requests until at least **4 cells** are fully charged, ensuring you always have power left for rocket fabrication.
 
 ---
 
 ## 🛠 Usage Instructions
 
-To integrate the Rusteroids module into your galaxy simulation:
+To integrate Rusteroids into your galaxy simulation:
 
-### Testing
+### 1. Add Dependency
 
-```bash
-# Verify planet logic and dependencies
-cargo build
-cargo test
+Add the following to your `Cargo.toml` file:
+
+```toml
+[dependencies]
+rusteroid_planet = { git = "https://github.com/Rusteroids-Advanced-Programming/Planet.git" }
 
 ```
 
-### Implementation
+### 2. Initialize the Planet
 
-*placeholedr_instruction*
+Use the following snippet to bring your planet online:
+
+```rust
+// Initialize the planet and extract the core instance
+let planet = Rusteroids::new(...).unwrap().planet;
+
+```
+
+### 3. Testing
+
+```bash
+# Compile the planetary modules
+cargo build
+
+# Execute the defense and energy logic tests
+cargo test
+
+```
 
 ---
 
 ## 🛰 Contact Us
 
-Join our orbital command center for support and updates:
+Join our orbital command center to discuss strategies, report issues, or connect with the team:
 
 **[Join the Rusteroids Discord](https://discord.gg/wu96DjsA)**
